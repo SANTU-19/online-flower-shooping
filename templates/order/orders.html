@@ -1,0 +1,155 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Orders</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #fdecef;
+        margin: 0;
+      }
+
+      /* NAVBAR: Pushes Order/Cart to the right */
+      .nav-links {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        background: #ff4f81;
+        gap: 10px;
+      }
+      .nav-links a {
+        text-decoration: none;
+        color: white;
+        font-size: 14px;
+      }
+      .nav-links .cart-view-btn:first-of-type {
+        margin-left: auto;
+      }
+      .cart-view-btn {
+        background: #ffcc00;
+        color: #333 !important;
+        padding: 6px 14px;
+        border-radius: 50px;
+        font-weight: bold;
+      }
+
+      .container {
+        max-width: 500px;
+        margin: 20px auto;
+        padding: 0 15px;
+      }
+      .section-title {
+        font-weight: bold;
+        color: #ff4f81;
+        margin: 25px 0 10px 0;
+        font-size: 15px;
+      }
+
+      /* Card Styles */
+      .order-card {
+        background: white;
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .status-badge {
+        font-size: 11px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-weight: bold;
+        display: inline-block;
+        margin-top: 5px;
+      }
+      .status-Pending {
+        background: #fff4e5;
+        color: #ff9800;
+      }
+      .status-Confirmed {
+        background: #e3f2fd;
+        color: #2196f3;
+      }
+      .status-Delivered {
+        background: #e8f5e9;
+        color: #4caf50;
+      }
+      .status-Cancelled {
+        background: #ffebee;
+        color: #f44336;
+      }
+
+      .details-btn {
+        background: #ff4f81;
+        color: white !important;
+        padding: 8px 12px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="nav-links">
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'view_cart' %}" class="cart-view-btn">🛒</a>
+      <a href="{% url 'order_list' %}" class="cart-view-btn">Order</a>
+    </nav>
+
+    <div class="container">
+      <div class="section-title">ACTIVE ORDERS</div>
+      {% for order in current_orders %}
+      <div class="order-card">
+        <div>
+          <div style="font-weight: bold">Order #{{ order.id }}</div>
+          <div class="status-badge status-{{ order.status }}">
+            {{ order.status }}
+          </div>
+        </div>
+        <a href="{% url 'order_detail' order.id %}" class="details-btn"
+          >Details</a
+        >
+      </div>
+      {% endfor %}
+
+      <div class="section-title" style="color: #777; margin-top: 40px">
+        HISTORY
+      </div>
+      {% for order in history_orders %}
+      <div class="order-card" style="opacity: 0.85">
+        <div>
+          <div style="font-weight: bold; color: #666">
+            Order #{{ order.id }}
+          </div>
+
+          <div class="status-badge status-{{ order.status }}">
+            {{ order.status }}
+          </div>
+
+          {% if order.status == "Cancelled" %}
+          <div style="margin-top: 6px; font-size: 12px; color: #f44336">
+            Your order has been cancelled.<br />
+            Sorry, item not available.
+          </div>
+          {% elif order.status == "Delivered" %}
+          <div style="margin-top: 6px; font-size: 12px; color: #4caf50">
+            Order delivered successfully.
+          </div>
+          {% endif %}
+        </div>
+
+        <a
+          href="{% url 'order_detail' order.id %}"
+          class="details-btn"
+          style="background: #777"
+        >
+          Details
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </body>
+</html>

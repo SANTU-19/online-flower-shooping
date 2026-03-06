@@ -1,0 +1,38 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<div class="flowers-page-1">
+  <h1 class="page-title">On Stock</h1>
+
+  <div class="product-grid">
+    {% for p in products %}
+    <div class="product-card">
+      <img src="{{ p.image.url }}" alt="{{ p.name }}" />
+      <h3>{{ p.name }}</h3>
+      <p class="price">₹{{ p.price }}</p>
+      <p class="product-desc">{{p.description}}</p>
+
+      <button
+        type="button"
+        class="add-cart"
+        onclick="addToCart({{ p.id }}, '{{ p.name|escapejs }}')"
+      >
+        Add to Cart
+      </button>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  function addToCart(productId) {
+    fetch("/cart/add/" + productId + "/")
+      .then(function () {
+        console.log("Added to cart");
+      })
+      .catch(function (error) {
+        console.error("Error:", error);
+      });
+  }
+</script>
+
+{% endblock %}

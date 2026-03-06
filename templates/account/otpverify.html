@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block page_class %}auth-page{% endblock %}
+
+{% block content %}
+<div class="auth-box">
+
+    <h2>Verify Your Email</h2>
+
+    <!-- Display Django messages -->
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- OTP Form -->
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="otp" placeholder="Enter 6-digit OTP" required>
+        <button type="submit">Verify OTP</button>
+    </form>
+
+    <!-- OTP Timer -->
+    <p class="auth-note">
+        OTP valid for <span id="timer">05:00</span>
+    </p>
+
+    <!-- Resend OTP Link -->
+    <p class="auth-note">
+        Didn't receive OTP? 
+        <a href="{% url 'resend_otp' %}" id="resend-link" style="pointer-events:none; opacity:0.5;">Resend OTP</a>
+    </p>
+
+</div>
+
+<!-- OTP Countdown Script -->
+<script>
+let time = 300; // 5 minutes
+const timerEl = document.getElementById('timer');
+const resendLink = document.getElementById('resend-link');
+
+function updateTimer() {
+    const minutes = String(Math.floor(time / 60)).padStart(2, '0');
+    const seconds = String(time % 60).padStart(2, '0');
+    timerEl.textContent = `${minutes}:${seconds}`;
+    if (time <= 0) {
+        clearInterval(interval);
+        resendLink.style.pointerEvents = 'auto';
+        resendLink.style.opacity = '1';
+    } else {
+        time--;
+    }
+}
+
+const interval = setInterval(updateTimer, 1000);
+</script>
+
+{% endblock %}

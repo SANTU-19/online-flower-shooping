@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block page_class %}auth-page {% endblock %}
+
+{% block content %}
+
+<form method="POST" class="auth-box">
+    {% csrf_token %}
+
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <input type="text" name="full_name" placeholder="Full Name" value="{{ full_name }}" required>
+    <input type="text" name="username" placeholder="Username with number" value="{{ username }}" required>
+    <input type="email" name="email" placeholder="Email" value="{{ email }}" required>
+    <input type="text" name="phone" placeholder="Phone Number" value="{{ phone }}" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+    <button type="submit">Sign Up</button>
+</form>
+
+{% endblock %}

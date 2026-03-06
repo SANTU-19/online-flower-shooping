@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% block content %} {% comment %} {% include
+"head.html"%} {% endcomment %}
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <h1>Fresh Flowers for Every Occasion 🌸</h1>
+  <p>Delivering happiness with every bouquet</p>
+  {% if request.user.is_authenticated %}
+
+  <a href="{% url 'flowers' %}" class="btn btn-outline-dark">shop now</a>
+  {% else %}
+  <a href="{% url 'login' %}?next={% url 'flowers' %}" class="btn">shop now></a>
+  {% endif %}
+</section>
+
+<!--flower section -->
+{% include "extraa\extra_flower.html" %}
+
+<!-- INCLUDE ABOUT -->
+{% include 'extraa\extra_about.html' %}
+
+<!-- INCLUDE CONTACT -->
+{% include 'extraa\extra_contact.html' %} {% endblock %}
