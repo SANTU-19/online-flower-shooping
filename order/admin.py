@@ -14,8 +14,7 @@ class OrderAdmin(admin.ModelAdmin):
     )
 
     actions = ['admin_deliver', 'admin_cancel']
-
-    # ✅ DELIVERY – anytime
+ 
     def admin_deliver(self, request, queryset):
         queryset.filter(
             status__in=['Pending', 'Confirmed']
@@ -25,8 +24,7 @@ class OrderAdmin(admin.ModelAdmin):
         )
 
     admin_deliver.short_description = "Deliver order (admin)"
-
-    # ❌ CANCEL – only within 24h
+ 
     def admin_cancel(self, request, queryset):
         limit_time = timezone.now() - timedelta(hours=24)
 

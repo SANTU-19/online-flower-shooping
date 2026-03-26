@@ -24,7 +24,7 @@ def profile_view(request):
         request.user.save()
         profile.save()
 
-        return redirect('profile')  # reload the profile page
+        return redirect('profile')   
 
     return render(request, 'profile/profilee.html', {'profile': profile})
 
